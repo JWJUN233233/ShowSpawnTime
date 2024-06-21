@@ -88,11 +88,37 @@ public class LanguageUtils {
         return 0;
     }
 
+    public static String getArea() {
+        return ShowSpawnTime.getScoreboardManager().getContent(ShowSpawnTime.getScoreboardManager().getSize() - 2).replace("Area:", "").replace("§a", "").trim();
+    }
+
     private static String cacheMapSideBarContent = "";
 
     private static ZombiesMap cacheMap = ZombiesMap.NULL;
-
     public static ZombiesMap getMap() {
+        ZombiesMap map = getMap0();
+        if (map != ZombiesMap.NULL) return map;
+        String area = getArea();
+        switch (area) {
+            case "Alley":
+            case "Office":
+            case "Gallery":
+            case "Hotel":
+            case "Apartment":
+            case "Power Station":
+            case "Roof":
+            case "Garden":
+                return cacheMap = ZombiesMap.DEAD_END;
+            case "Park Entrance":
+            case "Roller Coaster":
+            case "Ferris Wheel":
+            case "Bumper Cars":
+                return cacheMap = ZombiesMap.ALIEN_ARCADIUM;
+            default: return ZombiesMap.NULL;
+        }
+    }
+
+    public static ZombiesMap getMap0() {
         String mapString = ShowSpawnTime.getScoreboardManager().getContent(ShowSpawnTime.getScoreboardManager().getSize() - 2);
         if (cacheMapSideBarContent.equals(mapString)) {
             return cacheMap;
